@@ -38,4 +38,7 @@ public interface JsonConfig extends Config {
 Factory configFactory = ConfigFactory.newInstance();
 configFactory.registerLoader(new JsonPathLoader());
 JsonConfig jsonConfig = configFactory.create(JsonConfig.class);
+String name = jsonConfig.name();
+String firstChild = jsonConfig.children().get(0);
+int wifeAge = jsonConfig.wifeAge();
 ```
