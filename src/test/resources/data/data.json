@@ -1,0 +1,11 @@
+{
+  "name": "Anatoliy",
+  "age": 33,
+  "family": {
+    "children": [
+      "Andrey",
+      "Arseniy"
+    ],
+    "wife": "Olga"
+  }
+}
