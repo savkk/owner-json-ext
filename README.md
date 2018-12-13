@@ -16,26 +16,26 @@
 ```
 
 ```java
-    @Config.Sources("classpath:config.json")
-    public interface JsonConfig extends Config {
-        String name();
+@Config.Sources("classpath:config.json")
+public interface JsonConfig extends Config {
+    String name();
 
-        Integer age();
+    Integer age();
 
-        @Key("family.children")
-        List<String> children();
+    @Key("family.children")
+    List<String> children();
 
-        @Key("family.wife")
-        String wife();
+    @Key("family.wife")
+    String wife();
 
-        @DefaultValue("27")
-        @Key("family.wife.age")
-        int wifeAge();
-    }
+    @DefaultValue("27")
+    @Key("family.wife.age")
+    int wifeAge();
+}
 ```
 
 ```java
-    Factory configFactory = ConfigFactory.newInstance();
-    configFactory.registerLoader(new JsonPathLoader());
-    JsonConfig jsonConfig = configFactory.create(JsonConfig.class);
+Factory configFactory = ConfigFactory.newInstance();
+configFactory.registerLoader(new JsonPathLoader());
+JsonConfig jsonConfig = configFactory.create(JsonConfig.class);
 ```
