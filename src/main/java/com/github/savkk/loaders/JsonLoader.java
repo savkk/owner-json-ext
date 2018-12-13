@@ -9,6 +9,9 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -24,27 +27,16 @@ public class JsonLoader implements Loader {
     }
 
     public void load(Properties properties, URI uri) throws IOException {
-        File file = new File(uri);
+        Path path = Paths.get(uri);
+        List<String> list = Files.readAllLines(path);
+        String json = String.join(System.lineSeparator(), list);
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(readFile(file));
+        JsonElement element = parser.parse(json);
         jsonElementToProperties(element, properties, "");
     }
 
     public String defaultSpecFor(String uriPrefix) {
         return uriPrefix + ".json";
-    }
-
-    private String readFile(File f) throws IOException {
-        try (InputStream is = new FileInputStream(f)) {
-            StringBuilder result = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = br.readLine();
-            while (line != null) {
-                result.append(line).append("\n");
-                line = br.readLine();
-            }
-            return result.toString();
-        }
     }
 
     private void jsonElementToProperties(JsonElement element, Properties properties, String targetKey) {
