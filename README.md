@@ -1,4 +1,9 @@
-# OWNER  Json Loader
+# OWNER JSON-Loader
+
+## JSON Loader для библиотеки OWNER
+
+Позволяет минимизировать код для обработки сохраненной в формате JSON конфигурации приложения.
+
 [OWNER Java library](https://github.com/lviggiano/owner)
 
 ```json
@@ -84,6 +89,7 @@ public interface JsonConfig extends Config {
 Factory configFactory = ConfigFactory.newInstance();
 configFactory.registerLoader(new JsonPathLoader());
 JsonConfig jsonConfig = configFactory.create(JsonConfig.class);
+
 List<String> suites = jsonConfig.suites();
 boolean isDebug = jsonConfig.isDebug();
 String firstDBPassword = jsonConfig.dbPassword0();

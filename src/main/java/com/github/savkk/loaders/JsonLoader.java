@@ -26,25 +26,28 @@ public class JsonLoader implements Loader {
         }
     }
 
-    public void load(Properties properties, URI uri) throws IOException {
+    public void load(Properties result, URI uri) throws IOException {
         Path path = Paths.get(uri);
         List<String> list = Files.readAllLines(path);
-        String json = String.join(System.lineSeparator(), list);
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(json);
-        jsonElementToProperties(element, properties, "");
+        parseJsonString(String.join(System.lineSeparator(), list), result);
     }
 
     public String defaultSpecFor(String uriPrefix) {
         return uriPrefix + ".json";
     }
 
-    private void jsonElementToProperties(JsonElement element, Properties properties, String targetKey) {
+    private void parseJsonString(String json, Properties result) {
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(json);
+        parseJsonElement(element, result, "");
+    }
+
+    private void parseJsonElement(JsonElement element, Properties result, String targetKey) {
         if (element.isJsonObject()) {
             for (String key : element.getAsJsonObject().keySet()) {
-                jsonElementToProperties(
+                parseJsonElement(
                         element.getAsJsonObject().get(key),
-                        properties,
+                        result,
                         targetKey + (targetKey.isEmpty() ? "" : ".") + key);
             }
         } else if (element.isJsonArray()) {
@@ -53,16 +56,16 @@ public class JsonLoader implements Loader {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonElement jsonElement = jsonArray.get(i);
                 if (jsonElement.isJsonObject()) {
-                    jsonElementToProperties(jsonElement, properties, targetKey + "[" + i + "]");
+                    parseJsonElement(jsonElement, result, targetKey + "[" + i + "]");
                 } else if (jsonElement.isJsonPrimitive()) {
                     list.add(jsonElement.getAsString());
                 }
             }
             if (!list.isEmpty()) {
-                properties.put(targetKey, String.join(", ", list));
+                result.put(targetKey, String.join(", ", list));
             }
         } else {
-            properties.put(targetKey, element.getAsString());
+            result.put(targetKey, element.getAsString());
         }
     }
 }
