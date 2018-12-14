@@ -1,11 +1,32 @@
 {
-  "name": "Anatoliy",
-  "age": 33,
-  "family": {
-    "children": [
-      "Andrey",
-      "Arseniy"
+  "application": {
+    "debug": "false",
+    "suites": [
+      "smoke",
+      "master"
     ],
-    "wife": "Olga"
+    "endpoints": {
+      "fistapplication": {
+        "application": "first-name",
+        "baseuri": "/first-base-path/",
+        "port": "9080"
+      }
+    },
+    "was": {
+      "login": "was_login",
+      "password": "was_password"
+    },
+    "databases": [
+      {
+        "url": "jdbc:oracle:thin:@fistdbhost:1521:fdb",
+        "login": "first_db_login",
+        "password": "first_db_password"
+      },
+      {
+        "url": "jdbc:oracle:thin:@seconddbhost:1521:sdb",
+        "login": "second_db_login",
+        "password": "second_db_password"
+      }
+    ]
   }
 }

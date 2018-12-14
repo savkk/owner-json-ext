@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.aeonbits.owner.loaders.Loader;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -50,13 +50,17 @@ public class JsonLoader implements Loader {
         } else if (element.isJsonArray()) {
             JsonArray jsonArray = element.getAsJsonArray();
             List<String> list = new ArrayList<>();
-            for (JsonElement el : jsonArray) {
-                if (!el.isJsonPrimitive()) {
-                    throw new IllegalStateException("Array value isn't primitive");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement jsonElement = jsonArray.get(i);
+                if (jsonElement.isJsonObject()) {
+                    jsonElementToProperties(jsonElement, properties, targetKey + "[" + i + "]");
+                } else if (jsonElement.isJsonPrimitive()) {
+                    list.add(jsonElement.getAsString());
                 }
-                list.add(el.getAsString());
             }
-            properties.put(targetKey, String.join(", ", list));
+            if (!list.isEmpty()) {
+                properties.put(targetKey, String.join(", ", list));
+            }
         } else {
             properties.put(targetKey, element.getAsString());
         }
