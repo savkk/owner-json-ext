@@ -87,7 +87,7 @@ public interface JsonConfig extends Config {
 
 ```java
 Factory configFactory = ConfigFactory.newInstance();
-configFactory.registerLoader(new JsonPathLoader());
+configFactory.registerLoader(new JsonLoader());
 JsonConfig jsonConfig = configFactory.create(JsonConfig.class);
 
 List<String> suites = jsonConfig.suites();
